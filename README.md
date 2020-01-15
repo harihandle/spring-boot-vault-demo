@@ -1,4 +1,5 @@
 # spring-boot-vault-demo
+Refer official spring boot and vault documentation for a more updated way.
 
 ## Vault
 The defacto way for holding secrets
