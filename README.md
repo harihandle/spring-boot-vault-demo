@@ -1,5 +1,6 @@
 # spring-boot-vault-demo
-Refer official spring boot and vault documentation for a more updated way.
+- Refer official spring boot and vault documentation for a more updated way.
+- Refer no-bootstrap branch for a different way
 
 ## Vault
 The defacto way for holding secrets
