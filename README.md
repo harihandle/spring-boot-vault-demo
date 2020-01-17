@@ -49,27 +49,16 @@ vault kv put secret/gs-vault-config/cloud example.username=clouduser example.pas
     - https://stackoverflow.com/a/55433475
 
 ### Issues
-- `spring.cloud.vault.enabled=false` has no effect. It doesn't disable vault bootstrap configuration.
+None
 
 ### Easy Way
-- Include Spring cloud and vault dependencies
-- **bootstrap.yml** in resources folder
-    ```
-    spring.cloud.vault:
-      host: localhost
-      port: 8200
-      scheme: http
-      uri: http://localhost:8200
-      connection-timeout: 5000
-      read-timeout: 15000
-      config:
-        order: -10
-      token: 00000000-0000-0000-0000-000000000000
-    ```
-- POJO bean
-    ```
-    @Bean
-    public MyCredentials myCredentials(VaultOperations vaultOperations) {
-        return vaultOperations.read("secret/spring-boot-vault-demo/mycredentials", MyCredentials.class).getData();
-    }
-    ```
+- Include vault core dependency
+- Extend `AbstractVaultConfiguration` and implement the methods.
+    - This will get you `VaultOperations`
+- Have a `VaultRepository` configured with base path (`secret/spring-boot-vault-demo`) and read secret from subpaths (`mycredentials`)
+```
+// Autowire VaultOperations. Lets you read from multiple different base paths.
+VaultKeyValueOperations vaultKeyValueOperations = vaultOperations.opsForKeyValue("secret/spring-boot-vault-demo", VaultKeyValueOperationsSupport.KeyValueBackend.unversioned());
+VaultResponseSupport<T> result = vaultKeyValueOperations.get("mycredentials", MyCredentials.class);
+MyCredentials myCredentials = result.getData();
+```

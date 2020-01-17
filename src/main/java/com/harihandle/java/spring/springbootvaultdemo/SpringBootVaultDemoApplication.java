@@ -1,16 +1,19 @@
 package com.harihandle.java.spring.springbootvaultdemo;
 
+import com.harihandle.java.spring.springbootvaultdemo.db.VaultRepository;
 import com.harihandle.java.spring.springbootvaultdemo.model.MyCredentials;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@Slf4j
 @SpringBootApplication
 public class SpringBootVaultDemoApplication implements CommandLineRunner {
 
     @Autowired
-    private MyCredentials myCredentials;
+    private VaultRepository vaultRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(SpringBootVaultDemoApplication.class, args);
@@ -18,7 +21,7 @@ public class SpringBootVaultDemoApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println(myCredentials.toString());
+        log.info(vaultRepository.findSecretBySubPath("mycredentials", MyCredentials.class).toString());
     }
 
 }
